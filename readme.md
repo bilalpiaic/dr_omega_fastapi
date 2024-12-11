@@ -38,8 +38,8 @@ Dr. Omega is a cutting-edge web application designed to assist doctors in identi
 
 1. Clone the repository and navigate to the `backend/` directory:
    ```bash
-   git clone https://github.com/your-repo/dr-omega.git
-   cd dr-omega/backend
+   git clone https://github.com/bilalpiaic/dr_omega_fastapi
+   cd dr_omega_fastapi/backend
    ```
    **Why?**: This ensures you have the complete source code for the backend and that you are working in the correct directory.
 
