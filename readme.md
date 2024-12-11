@@ -17,6 +17,7 @@ Dr. Omega is a cutting-edge web application designed to assist doctors in identi
 - **Libraries**: LangChain, FAISS, Pydantic
 - **Database**: PostgreSQL
 - **Utilities**: File upload handling, CORS middleware
+- **Environment**: Poetry for dependency management
 
 ### Frontend
 - **Framework**: Next.js
@@ -40,12 +41,25 @@ Dr. Omega is a cutting-edge web application designed to assist doctors in identi
    git clone https://github.com/your-repo/dr-omega.git
    cd dr-omega/backend
    ```
+   **Why?**: This ensures you have the complete source code for the backend and that you are working in the correct directory.
 
-2. Build and run the backend Docker container:
+2. Install Poetry:
    ```bash
-   docker build -t dr-omega-backend .
-   docker run -d -p 8000:8000 --name dr-omega-backend-container dr-omega-backend
+   pip install poetry
    ```
+   **Why?**: Poetry is a dependency manager for Python projects. It simplifies installation and ensures all required packages are managed efficiently.
+
+3. Use Poetry to install dependencies:
+   ```bash
+   poetry install
+   ```
+   **Why?**: This command reads the `pyproject.toml` file and installs all necessary dependencies for the backend application.
+
+4. Start the FastAPI server with Poetry:
+   ```bash
+   poetry run uvicorn app.main:app --reload
+   ```
+   **Why?**: `uvicorn` is the server used to run FastAPI. The `--reload` flag allows automatic reloading during development whenever code changes.
 
 ### Frontend Setup
 
@@ -53,12 +67,14 @@ Dr. Omega is a cutting-edge web application designed to assist doctors in identi
    ```bash
    cd ../frontend
    ```
+   **Why?**: This step positions you in the frontend folder where the Next.js application is located.
 
 2. Build and run the frontend Docker container:
    ```bash
    docker build -t dr-omega-frontend .
    docker run -d -p 3000:3000 --name dr-omega-frontend-container dr-omega-frontend
    ```
+   **Why?**: This builds and starts the frontend application in a Docker container, ensuring consistency across development environments.
 
 ## Project Structure
 
@@ -79,7 +95,7 @@ backend/
 │       ├── file_utils.py      # Utilities for handling file uploads
 ├── uploads/                   # Directory for storing uploaded files
 ├── Dockerfile                 # Docker configuration for backend
-├── requirements.txt           # Python dependencies
+├── pyproject.toml             # Poetry configuration for dependencies
 ├── README.md                  # Project documentation
 └── .gitignore                 # Git ignored files
 ```
@@ -124,14 +140,17 @@ WORKDIR /app
 # Copy the current directory contents into the container
 COPY . /app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Poetry
+RUN pip install poetry
+
+# Install dependencies using Poetry
+RUN poetry install
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
 # Run FastAPI server
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 ## Dockerfile for Frontend
